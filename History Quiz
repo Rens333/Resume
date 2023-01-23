@@ -1,0 +1,54 @@
+# History quiz
+
+from time import sleep
+from random import randint
+
+score = 0
+countries_flags = {"UK": 1801, "France": 1794, "Germany": 1848, "USA": 1959, "Netherlands": 1690, "Denmark": 1219, "Sweden": 1550}
+flags = list(countries_flags.values())
+countries = list(countries_flags.keys())
+
+print("Welcome to the history quiz! Round 1: Flags")
+
+def get_user_selection():
+    return input(f"\nEnter a choice: ")
+
+
+def select_countries():
+    pass
+
+
+def determine_score():
+    global score
+    global countries_flags
+    countries = list(countries_flags.keys())
+
+    country1 = countries[randint(0, len(countries) - 1)]
+    countries.remove(country1)
+    country2 = countries[randint(0, len(countries) - 1)]
+
+    print(country1, "or", country2)
+
+    if countries_flags[country1] < countries_flags[country2]:
+        answer = country1
+    else:
+        answer = country2
+
+    if get_user_selection() == answer:
+        score += 1
+        print("Correct! Your have a score of", score)
+    else:
+        print("Incorrect. Your still have a score of", score)
+
+
+while True:
+    print("\nWhich one of these countries has the oldest flag?")
+    select_countries()
+    determine_score()
+    sleep(0.2)
+    play_again = input("Next question? (y/n): ")
+    sleep(0.2)
+    if play_again.lower() != "y":
+        break
+
+print("\nYour final score is", score, "\nThanks for playing!")
