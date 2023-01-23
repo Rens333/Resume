@@ -1,0 +1,110 @@
+# Coin pusher
+
+from random import randint
+from time import sleep
+import math
+
+class Queue(list):
+
+    def enqueue(self, value):
+        self.append(value)
+
+    def dequeue(self):
+        return self.pop(0)
+
+
+# Change difficulty:
+# ---------------------------------------------------------------------------
+my_coins = ['10 cents', '50 cents', '1 euro']
+machine_coins = ['1 cent', '20 cents', '5 cents', '2 euros', '5 cents']
+machine_capacity = 1
+# ---------------------------------------------------------------------------
+
+# Remember starting coins
+my_coins_start = []
+for i in my_coins:
+    if 'cent' in i:
+        i = ''.join(a for a in i if a.isdigit())
+        my_coins_start.append(int(i)/100)
+    if 'euro' in i:
+        i = ''.join(a for a in i if a.isdigit())
+        my_coins_start.append(int(i))
+
+# Initiate queue
+queue_machine = Queue(machine_coins)
+
+print(
+    f"Welcome to the coin pusher. Enter a coin and the machine might push one or two over the edge.\nThese coins are in the machine from closest to furthest: {', '.join(queue_machine)}")
+print(f"You have {', '.join(my_coins[0:-1])} and {''.join(my_coins[-1])} in your pocket.")
+while True:
+    # Reset winnings of previous round and enter own coins into machine.
+    winnings = []
+    enter = input("\nEnter a coin in the machine: ")
+    if enter not in my_coins:
+        print("Please enter one of your own coins.")
+        continue
+    queue_machine.enqueue(enter)
+    my_coins.remove(enter)
+    print(f"These coins are in the machine from closest to furthest: {', '.join(queue_machine)}")
+
+    sleep(1)
+    print("\nPushing coins")
+    sleep(1)
+    print("...")
+    sleep(1)
+    print("...")
+    sleep(1)
+    print("...\n")
+    sleep(1)
+
+    # Shuffle coins in machine.
+    chance = randint(1, 5)
+    if chance < 3:
+        queue_machine[-(chance + 1)], queue_machine[-(chance + 2)] = queue_machine[-(chance + 2)], queue_machine[
+            -(chance + 1)]
+
+    # Calculate number of coins won.
+    chance = randint(0, 10)
+    unlucky = chance < 2
+    lucky = chance > 7
+    if len(queue_machine) > machine_capacity and not unlucky:
+        winnings.append(queue_machine.dequeue())
+        my_coins.append(winnings[0])
+        if lucky:
+            winnings.append(queue_machine.dequeue())
+            my_coins.append(winnings[1])
+        print(f"{' and '.join(winnings)} fell out!")
+    else:
+        print("Too bad! All coins stayed in the machine.")
+    sleep(1)
+
+    # Update coins in machine and pocket.
+    print(f"\nThese coins are in the machine from closest to furthest: {', '.join(queue_machine)}")
+    if len(my_coins) == 1:
+        print(f"You have {''.join(my_coins)} in your pocket.")
+    else:
+        print(f"You have {', '.join(my_coins[0:-1])} and {''.join(my_coins[-1])} in your pocket.")
+
+    # End game?
+    if len(my_coins) == 0 or input("Continue playing? (y/n) ") == "n":
+        break
+
+# Calculate sum of total coins
+my_coins_end = []
+for i in my_coins:
+    if 'cent' in i:
+        i = ''.join(a for a in i if a.isdigit())
+        my_coins_end.append(int(i)/100)
+    if 'euro' in i:
+        i = ''.join(a for a in i if a.isdigit())
+        my_coins_end.append(int(i))
+total_winnings =  sum(my_coins_end) - sum(my_coins_start)
+
+if len(my_coins) == 0:
+    print("Game over. You're broke")
+elif total_winnings == 0:
+    print("You ended with the same amount as you started with.")
+elif total_winnings < 0:
+    print(f"You lost {round(math.sqrt(total_winnings ** 2), 2)} euro.")
+else:
+    print(f"You won {round(total_winnings, 2)} euro.")
