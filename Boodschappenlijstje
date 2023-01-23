@@ -1,0 +1,52 @@
+# Boodschappenlijstje en bonnetje
+
+import random
+import decimal
+
+boodschappenlijstje = []
+bonnetje = {}
+
+
+def opschrijven():
+    keuze = None
+    while keuze != "naar de supermarkt":
+        print(f"Dit is je boodschappenlijstje:\n{boodschappenlijstje}\nKies een actie")
+        keuze = input("toevoegen / verwijderen / naar de supermarkt\n>>> ")
+        if keuze == "toevoegen":
+            boodschappenlijstje.append(input("Wat wil je toevoegen aan je boodschappenlijstje?\n>>> "))
+        elif keuze == "verwijderen":
+            continue
+
+
+def bijhouden():
+    bonnetje[product] = float(decimal.Decimal(random.randrange(129, 356)) / 100)
+    print(bonnetje)
+
+
+def totaalbedrag(myDict):
+    list = []
+    for i in myDict:
+        list.append(myDict[i])
+    totaal = float(sum(list))
+    return totaal
+
+
+def afstrepen():
+    boodschappenlijstje.remove(product)
+
+
+opschrijven()
+
+while len(boodschappenlijstje):
+    print(f"Dit staat op je boodschappenlijstje:\n{boodschappenlijstje}")
+    product = input("\nWat heb je gepakt? ")
+    if product not in boodschappenlijstje:
+        if input(f"{product.title()} staat niet op je lijstje. Wil je het alsnog pakken? (ja/nee) ") == "nee":
+            continue
+        else:
+            boodschappenlijstje.append(product)
+    bijhouden()
+    afstrepen()
+
+print("\nKlaar met boodschappen!")
+print("Totaalbedrag: €", totaalbedrag(bonnetje))
