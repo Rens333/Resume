@@ -1,0 +1,28 @@
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS tasks;
+
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE
+  updated_at TEXT,
+  created_at TEXT
+);
+
+CREATE TABLE tasks {
+  id INTEGER PRIMARY KEY,
+  user_id INTEGER,
+  status TEXT,
+  description TEXT,
+  updated_at TEXT,
+  created_at TEXT
+  FOREIGN KEY(user_id) REFERENCES users(id)
+}
+
+INSERT INTO users (name, email) VALUES ("John", "john@doe.com");
+INSERT INTO users (name, email) VALUES ("Jane", "jane@doe.com");
+
+INSERT INTO tasks (user_id, status, description) VALUES (1, "TODO", "Swim");
+INSERT INTO tasks (user_id, status, description) VALUES (1, "TODO", "Groceries");
+INSERT INTO tasks (user_id, status, description) VALUES (2, "TODO", "Code");
+INSERT INTO tasks (user_id, status, description) VALUES (2, "TODO", "Run");
