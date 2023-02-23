@@ -59,12 +59,12 @@ FROM (
     SELECT 
         zin.value, 
         CASE
-			WHEN value = ZNW.woord THEN 'ZNW'
-			WHEN value = LD.woord THEN 'LD'
-			WHEN value = WW.woord THEN 'WW'
-			WHEN value = VZ.woord THEN 'VZ'
-			ELSE 'onbekend'
-		END AS woordsoorten
+		WHEN value = ZNW.woord THEN 'ZNW'
+		WHEN value = LD.woord THEN 'LD'
+		WHEN value = WW.woord THEN 'WW'
+		WHEN value = VZ.woord THEN 'VZ'
+		ELSE 'onbekend'
+	END AS woordsoorten
     FROM STRING_SPLIT('Jan koopt een brood bij de bakker', ' ') AS zin
     LEFT JOIN ZNW ON ZNW.woord = zin.value
     LEFT JOIN LD ON LD.woord = zin.value
